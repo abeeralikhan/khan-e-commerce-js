@@ -1,2 +1,2 @@
 # Khan E-Commerce v1
-An E-Commerce App made using vanilla JavaScript, HTML, and CSS.
+An E-Commerce App made using JavaScript, Node JS, and Express JS. 
