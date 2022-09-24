@@ -1,0 +1,24 @@
+{
+  "name": "khan-e-commerce",
+  "version": "1.0.0",
+  "description": "An E-Commerce App made using vanilla JavaScript, HTML, and CSS.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abeeralikhan/khan-e-commerce-js.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abeeralikhan/khan-e-commerce-js/issues"
+  },
+  "homepage": "https://github.com/abeeralikhan/khan-e-commerce-js#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "nodemon": "^2.0.20"
+  }
+}
