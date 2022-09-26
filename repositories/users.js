@@ -1,4 +1,3 @@
-const { NONAME } = require("dns");
 const fs = require("fs");
 const uuid = require("uuid");
 
@@ -48,14 +47,18 @@ class UserRepository {
 
     return records.find((record) => record.id === id);
   }
+
+  async delete(id) {
+    const records = await this.getAll();
+    const filteredRecords = records.filter((record) => record.id !== id);
+    await this.writeAll(filteredRecords);
+  }
 }
 
 const test = async () => {
   const repo = new UserRepository("users.json");
 
-  const user = await repo.getOne("4e51863a-c768-4ac9-9165-f57934325fce");
-
-  console.log(user);
+  repo.delete("4e51863a-c768-4ac9-9165-f57934325fce");
 };
 
 test();
