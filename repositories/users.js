@@ -53,12 +53,16 @@ class UserRepository {
     const filteredRecords = records.filter((record) => record.id !== id);
     await this.writeAll(filteredRecords);
   }
+
+  async update(id, attrs) {
+    const records = await this.getAll();
+    const record = records.find((record) => record.id === id);
+
+    if (!record) {
+      throw new Error(`Record with id ${id.slice(0, 5)}... not found`);
+    }
+
+    Object.assign(record, attrs);
+    await this.writeAll(records);
+  }
 }
-
-const test = async () => {
-  const repo = new UserRepository("users.json");
-
-  repo.delete("4e51863a-c768-4ac9-9165-f57934325fce");
-};
-
-test();
