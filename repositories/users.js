@@ -65,4 +65,36 @@ class UserRepository {
     Object.assign(record, attrs);
     await this.writeAll(records);
   }
+
+  async getOneBy(filters) {
+    const records = await this.getAll();
+
+    for (let record of records) {
+      let found = true;
+
+      for (let key in filters) {
+        if (record[key] !== filters[key]) {
+          found = false;
+        }
+      }
+
+      if (found) return record;
+    }
+  }
 }
+
+const test = async () => {
+  const repo = new UserRepository("users.json");
+
+  // await repo.create({ email: "test@test.com", password: "test123" });
+
+  const user = await repo.getOneBy({
+    username: "abeeird",
+    email: "abeer@test.com",
+    id: "123412314",
+  });
+
+  console.log(user);
+};
+
+test();
