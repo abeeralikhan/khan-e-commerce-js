@@ -1,4 +1,6 @@
+const { NONAME } = require("dns");
 const fs = require("fs");
+const uuid = require("uuid");
 
 class UserRepository {
   constructor(filename) {
@@ -24,7 +26,8 @@ class UserRepository {
     // get all the records
     const records = await this.getAll();
 
-    records.push(attrs);
+    // adding a random id to the object
+    records.push({ ...attrs, id: this.randomId() });
     await this.writeAll(records);
   }
 
@@ -35,16 +38,24 @@ class UserRepository {
       JSON.stringify(records, null, 2)
     );
   }
+
+  randomId() {
+    return uuid.v4();
+  }
+
+  async getOne(id) {
+    const records = await this.getAll();
+
+    return records.find((record) => record.id === id);
+  }
 }
 
 const test = async () => {
   const repo = new UserRepository("users.json");
 
-  await repo.create({ email: "test@test.com", password: "test123" });
+  const user = await repo.getOne("4e51863a-c768-4ac9-9165-f57934325fce");
 
-  const users = await repo.getAll();
-
-  console.log(users);
+  console.log(user);
 };
 
 test();
