@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const usersRepo = require("./repositories/users");
 
 const app = express();
 
@@ -8,22 +9,30 @@ const PORT = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
-  res.status(200).send("<h1>Hello World!</h1>");
-});
-
-app.get("/loginForm", (req, res) => {
   res.send(`
     <form method="POST">
       <input name="email" type="email" placeholder="Enter your email"/>
       <input name="password" type="password" placeholder="Enter your password"/>
-      <button>Sign in</button>
+      <input name="passwordConfirmation" type="password" placeholder="Enter your password again"/>
+      <button>Sign Up</button>
     </form>
   `);
 });
 
-app.post("/", (req, res) => {
-  console.log(req.body);
-  res.send("<h1>Form has been submitted succesfully!</h1>");
+app.post("/", async (req, res) => {
+  const { email, password, passwordConfirmation } = req.body;
+
+  const doesUserExist = await usersRepo.getOneBy({ email });
+
+  if (doesUserExist) {
+    return res.send("Email already exist");
+  }
+
+  if (password !== passwordConfirmation) {
+    return res.send("Password must match!");
+  }
+
+  res.send("<h1>Account has been created successfully!</h1>");
 });
 
 app.listen(PORT, () => {
