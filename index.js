@@ -21,7 +21,7 @@ app.get("/loginForm", (req, res) => {
   `);
 });
 
-app.post("/loginForm", (req, res) => {
+app.post("/", (req, res) => {
   console.log(req.body);
   res.send("<h1>Form has been submitted succesfully!</h1>");
 });
