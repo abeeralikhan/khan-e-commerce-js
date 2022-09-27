@@ -1,12 +1,20 @@
+const helmet = require("helmet");
 const express = require("express");
 const bodyParser = require("body-parser");
+const cookieSession = require("cookie-session");
 const usersRepo = require("./repositories/users");
 
 const app = express();
 
 const PORT = 3000;
 
+app.use(helmet());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+  cookieSession({
+    keys: ["pq4gh3turiowp"],
+  })
+);
 
 app.get("/", (req, res) => {
   res.send(`
@@ -31,6 +39,14 @@ app.post("/", async (req, res) => {
   if (password !== passwordConfirmation) {
     return res.send("Password must match!");
   }
+
+  // Create a user in our repo to reperest this person
+  // We need to get back the id that is assigned to the newly generated user, because we dont know what id is assigned to them, we randonly generated it
+  const user = await usersRepo.create({ email, password });
+
+  // Store the id of that user inside the users cookie, so we can look upto to the cookie in the follow up requets
+  // We will receive this user id inside the cookie later
+  req.session.userId = user.id;
 
   res.send("<h1>Account has been created successfully!</h1>");
 });
