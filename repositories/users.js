@@ -1,5 +1,10 @@
 const fs = require("fs");
 const uuid = require("uuid");
+const util = require("util");
+const crypto = require("crypto");
+
+// crypto does not provide a promise based version of scrypt() function
+const scrypt = util.promisify(crypto.scrypt);
 
 class UserRepository {
   constructor(filename) {
@@ -22,16 +27,24 @@ class UserRepository {
 
   // attrs is an object
   async create(attrs) {
-    // get all the records
-    const records = await this.getAll();
-
     // adding a random id to the object
     attrs.id = this.randomId();
 
-    records.push(attrs);
+    // get all the records
+    const records = await this.getAll();
+    const salt = crypto.randomBytes(8).toString("hex");
+
+    // buffer of hash = password + salt;
+    const buf = await scrypt(attrs.password, salt, 64);
+
+    const record = {
+      ...attrs,
+      password: `${buf.toString("hex")}.${salt}`,
+    };
+    records.push(record);
     await this.writeAll(records);
 
-    return attrs;
+    return record;
   }
 
   async writeAll(records) {
