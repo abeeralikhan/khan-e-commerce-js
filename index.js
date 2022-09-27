@@ -16,7 +16,7 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => {
+app.get("/signup", async (req, res) => {
   res.send(`
     <form method="POST">
       <input name="email" type="email" placeholder="Enter your email"/>
@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
   `);
 });
 
-app.post("/", async (req, res) => {
+app.post("/signup", async (req, res) => {
   const { email, password, passwordConfirmation } = req.body;
 
   const doesUserExist = await usersRepo.getOneBy({ email });
@@ -49,6 +49,42 @@ app.post("/", async (req, res) => {
   req.session.userId = user.id;
 
   res.send("<h1>Account has been created successfully!</h1>");
+});
+
+app.get("/signout", (req, res) => {
+  req.session = null;
+  res.send("You are logged out succesfully!");
+});
+
+app.get("/signin", (req, res) => {
+  res.send(`
+    <form method="POST">
+      <input name="email" type="email" placeholder="Enter your email"/>
+      <input name="password" type="password" placeholder="Enter your password"/>
+      <button>Sign In</button>
+    </form>
+  `);
+});
+
+app.post("/signin", async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await usersRepo.getOneBy({ email });
+
+  if (!user) {
+    // if we did not find a matching email addres
+    return res.send("Email not found!");
+  }
+
+  if (user.password !== password) {
+    // if the password did not match
+    return res.send("Invalid password!");
+  }
+
+  // starting a session
+  req.session.userId = user.id;
+
+  res.send("You are signed in!");
 });
 
 app.listen(PORT, () => {
