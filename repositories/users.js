@@ -47,6 +47,17 @@ class UserRepository {
     return record;
   }
 
+  async comparePasswords(saved, supplied) {
+    // Saved --> password saved in our database. 'hashed.salt'
+    // Supplied --> password given to us by a user trying to sign in
+
+    const [hashed, salt] = saved.split(".");
+    const buf = await scrypt(supplied, salt, 64);
+    const hashedSupplied = buf.toString("hex");
+
+    return hashed === hashedSupplied;
+  }
+
   async writeAll(records) {
     // converting the js object into a string before writing it to the storage
     await fs.promises.writeFile(
