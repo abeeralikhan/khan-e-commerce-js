@@ -14,23 +14,33 @@ router.get("/signup", async (req, res) => {
 router.post(
   "/signup",
   [
-    check("email").trim().normalizeEmail().isEmail(),
+    check("email")
+      .trim()
+      .normalizeEmail()
+      .isEmail()
+      .custom(async (email) => {
+        const doesUserExist = await usersRepo.getOneBy({ email });
+
+        if (doesUserExist) {
+          throw new Error("Entered email is already in use!");
+        }
+      }),
     check("password").trim().isLength({ min: 4, max: 20 }),
-    check("passwordConfirmation").trim().isLength({ min: 4, max: 20 }),
+    check("passwordConfirmation")
+      .trim()
+      .isLength({ min: 4, max: 20 })
+      .custom((passwordConfirmation, { req }) => {
+        if (req.body.password !== passwordConfirmation) {
+          throw new Error("Passwords must match!");
+        }
+      }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
-    const { email, password, passwordConfirmation } = req.body;
 
-    const doesUserExist = await usersRepo.getOneBy({ email });
+    console.log(errors);
 
-    if (doesUserExist) {
-      return res.send("Email already exist");
-    }
-
-    if (password !== passwordConfirmation) {
-      return res.send("Password must match!");
-    }
+    const { password, passwordConfirmation, email } = req.body;
 
     // Create a user in our repo to reperest this person
     // We need to get back the id that is assigned to the newly generated user, because we dont know what id is assigned to them, we randonly generated it
