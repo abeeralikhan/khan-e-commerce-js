@@ -51,7 +51,7 @@ module.exports = {
       const user = await usersRepo.getOneBy({ email: req.body.email });
       // will throw invalid password error if the user doesnot exist to keep the consistency
       if (!user) {
-        throw new Error("Invalid passowrd");
+        throw new Error("Invalid password");
       }
       const isPassowrdValid = await usersRepo.comparePasswords(
         user.password,
