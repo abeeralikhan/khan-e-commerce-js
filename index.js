@@ -8,6 +8,8 @@ const app = express();
 
 const PORT = 3000;
 
+app.use(express.static("public"));
+
 app.use(helmet());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
@@ -15,7 +17,7 @@ app.use(
     keys: ["pq4gh3turiowp"],
   })
 );
-app.use("/admin", authRouter);
+app.use("/", authRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is listening at ${PORT}`);
