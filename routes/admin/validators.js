@@ -13,7 +13,7 @@ module.exports = {
       const doesUserExist = await usersRepo.getOneBy({ email });
 
       if (doesUserExist) {
-        throw new Error("Entered email is already in use!");
+        throw new Error("Email already in use!");
       }
     }),
 
