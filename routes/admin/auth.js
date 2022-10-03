@@ -1,5 +1,5 @@
 const express = require("express");
-const { validationResult } = require("express-validator");
+const { validationResult, check } = require("express-validator");
 
 const usersRepo = require("../../repositories/users");
 const signUpTemplate = require("../../views/admin/auth/signup");
@@ -8,6 +8,8 @@ const {
   requireEmail,
   requirePassword,
   requirePasswordConfirmation,
+  requireEmailExist,
+  requireValidPassowrdForUser,
 } = require("./validators");
 
 const router = express.Router();
@@ -27,7 +29,7 @@ router.post(
       return res.send(signUpTemplate({ req, errors }));
     }
 
-    const { password, passwordConfirmation, email } = req.body;
+    const { password, email } = req.body;
 
     // Create a user in our repo to reperest this person
     // We need to get back the id that is assigned to the newly generated user, because we dont know what id is assigned to them, we randonly generated it
@@ -50,30 +52,27 @@ router.get("/signin", (req, res) => {
   res.send(signInTemplate());
 });
 
-router.post("/signin", async (req, res) => {
-  const { email, password } = req.body;
+router.post(
+  "/signin",
+  [requireEmailExist, requireValidPassowrdForUser],
+  async (req, res) => {
+    const errors = validationResult(req);
 
-  const user = await usersRepo.getOneBy({ email });
+    console.log(errors);
 
-  if (!user) {
-    // if we did not find a matching email addres
-    return res.send("Email not found!");
+    // if (!errors.isEmpty()) {
+    //   return res.send(signInTemplate({ errors }));
+    // }
+
+    const { email } = req.body;
+
+    const user = await usersRepo.getOneBy({ email });
+
+    // starting a session
+    req.session.userId = user.id;
+
+    res.send("You are signed in!");
   }
-
-  const isPassowrdValid = await usersRepo.comparePasswords(
-    user.password,
-    password
-  );
-
-  if (!isPassowrdValid) {
-    // if the password did not match
-    return res.send("Invalid password!");
-  }
-
-  // starting a session
-  req.session.userId = user.id;
-
-  res.send("You are signed in!");
-});
+);
 
 module.exports = router;
