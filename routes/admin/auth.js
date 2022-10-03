@@ -1,5 +1,5 @@
 const express = require("express");
-const { check, validationResult } = require("express-validator");
+const { validationResult } = require("express-validator");
 
 const usersRepo = require("../../repositories/users");
 const signUpTemplate = require("../../views/admin/auth/signup");
@@ -22,7 +22,10 @@ router.post(
   async (req, res) => {
     const errors = validationResult(req);
 
-    console.log(errors);
+    // if there are some errors in the signup process
+    if (!errors.isEmpty()) {
+      return res.send(signUpTemplate({ req, errors }));
+    }
 
     const { password, passwordConfirmation, email } = req.body;
 
