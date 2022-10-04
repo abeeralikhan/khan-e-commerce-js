@@ -4,7 +4,7 @@
   "description": "An E-Commerce App made using vanilla JavaScript, HTML, and CSS.",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon ./src/server.js"
   },
   "repository": {
     "type": "git",
