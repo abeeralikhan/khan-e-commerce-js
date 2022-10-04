@@ -1,8 +1,18 @@
+const { validationResult } = require("express-validator");
+
 const productsRepo = require("../../../repositories/products");
 const productsNewTemplate = require("../../../views/admin/products/new");
 
-function httpGetProductCreationForm(req, res) {
+function httpGetProductForm(req, res) {
   res.send(productsNewTemplate({}));
 }
 
-module.exports = { httpGetProductCreationForm };
+async function httpSubmitProductForm(req, res) {
+  const errors = validationResult(req);
+
+  console.log(errors);
+
+  res.send("Submitted");
+}
+
+module.exports = { httpGetProductForm, httpSubmitProductForm };

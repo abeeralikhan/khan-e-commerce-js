@@ -3,6 +3,8 @@ const usersRepo = require("../../repositories/users");
 
 // each key stores the result of each chain
 module.exports = {
+  // validators for users router
+
   // validation logic for email
   requireEmail: check("email")
     .trim()
@@ -64,4 +66,11 @@ module.exports = {
       }
     }
   ),
+
+  // validators for products router
+
+  requireTitle: check("title").trim().isLength({ min: 5, max: 40 }),
+
+  // toFloat() --> Converts a string into float
+  requirePrice: check("price").trim().toFloat().isFloat({ min: 1 }),
 };
