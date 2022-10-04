@@ -1,3 +1,8 @@
 const productsRepo = require("../../../repositories/products");
+const productsNewTemplate = require("../../../views/admin/products/new");
 
-module.exports = {};
+function httpGetProductCreationForm(req, res) {
+  res.send(productsNewTemplate({}));
+}
+
+module.exports = { httpGetProductCreationForm };
