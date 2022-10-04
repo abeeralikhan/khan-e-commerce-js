@@ -8,8 +8,6 @@ const productsRouter = require("./routes/admin/products");
 
 const app = express();
 
-const PORT = 3000;
-
 app.use(express.static("public"));
 app.use(helmet());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -23,6 +21,4 @@ app.use(
 app.use("/admin", authRouter);
 app.use("/admin", productsRouter);
 
-app.listen(PORT, () => {
-  console.log(`Server is listening at ${PORT}`);
-});
+module.exports = app;
