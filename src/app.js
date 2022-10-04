@@ -3,8 +3,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
 
-const authRouter = require("./routes/admin/auth");
-const productsRouter = require("./routes/admin/products");
+const authRouter = require("./routes/admin/auth/auth.route");
+const productsRouter = require("./routes/admin/products/products.route");
 
 const app = express();
 
@@ -19,6 +19,6 @@ app.use(
 
 // admin routers
 app.use("/admin", authRouter);
-app.use("/admin", productsRouter);
+app.use("/admin/products", productsRouter);
 
 module.exports = app;
