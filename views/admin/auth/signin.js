@@ -21,7 +21,7 @@ module.exports = ({ errors }) => {
               </div>
               <button class="button is-primary">Submit</button>
             </form>
-            <a href="/signup">Need an account? Sign Up</a>
+            <a href="/admin/signup">Need an account? Sign Up</a>
           </div>
         </div>
       </div>
