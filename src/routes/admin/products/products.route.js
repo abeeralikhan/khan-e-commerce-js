@@ -16,8 +16,8 @@ router.get("/create", productsController.httpGetProductForm);
 // to submit the product creation form
 router.post(
   "/create",
-  [requireTitle, requirePrice],
   upload.single("image"),
+  [requireTitle, requirePrice],
   productsController.httpSubmitProductForm
 );
 
