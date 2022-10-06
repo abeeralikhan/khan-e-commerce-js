@@ -1,5 +1,3 @@
-const { validationResult } = require("express-validator");
-
 const usersRepo = require("../../../repositories/users");
 const signUpTemplate = require("../../../views/admin/auth/signup");
 const signInTemplate = require("../../../views/admin/auth/signin");
@@ -9,13 +7,6 @@ function httpGetSignUp(req, res) {
 }
 
 async function httpPostSignUp(req, res) {
-  const errors = validationResult(req);
-
-  // if there are some errors in the signup process
-  if (!errors.isEmpty()) {
-    return res.send(signUpTemplate({ req, errors }));
-  }
-
   const { password, email } = req.body;
 
   // Create a user in our repo to reperest this person
@@ -34,12 +25,6 @@ function httpGetSignIn(req, res) {
 }
 
 async function httpPostSignIn(req, res) {
-  const errors = validationResult(req);
-
-  if (!errors.isEmpty()) {
-    return res.send(signInTemplate({ errors }));
-  }
-
   const { email } = req.body;
 
   const user = await usersRepo.getOneBy({ email });

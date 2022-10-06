@@ -1,8 +1,10 @@
-const express = require("express");
 const multer = require("multer");
+const express = require("express");
 
-const productsController = require("./products.controller");
+const { handleErrors } = require("../middlewares");
 const { requireTitle, requirePrice } = require("../validators");
+const productsController = require("./products.controller");
+const productsNewTemplate = require("../../../views/admin/products/new");
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -18,6 +20,7 @@ router.post(
   "/create",
   upload.single("image"),
   [requireTitle, requirePrice],
+  handleErrors(productsNewTemplate),
   productsController.httpSubmitProductForm
 );
 
