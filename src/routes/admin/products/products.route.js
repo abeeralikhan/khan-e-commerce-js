@@ -1,9 +1,11 @@
 const express = require("express");
+const multer = require("multer");
 
 const productsController = require("./products.controller");
 const { requireTitle, requirePrice } = require("../validators");
 
 const router = express.Router();
+const upload = multer({ storage: multer.memoryStorage() });
 
 // to get all products
 router.get("/");
@@ -15,6 +17,7 @@ router.get("/create", productsController.httpGetProductForm);
 router.post(
   "/create",
   [requireTitle, requirePrice],
+  upload.single("image"),
   productsController.httpSubmitProductForm
 );
 

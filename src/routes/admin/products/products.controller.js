@@ -10,7 +10,14 @@ function httpGetProductForm(req, res) {
 async function httpSubmitProductForm(req, res) {
   const errors = validationResult(req);
 
-  console.log(errors);
+  if (!errors.isEmpty()) {
+    return res.send(productsNewTemplate({ errors }));
+  }
+
+  const image = req.file.buffer.toString("base64");
+  const { title, price } = req.body;
+
+  await productsRepo.create({ title, price, image });
 
   res.send("Submitted");
 }
