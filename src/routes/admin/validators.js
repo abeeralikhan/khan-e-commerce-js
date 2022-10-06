@@ -69,8 +69,15 @@ module.exports = {
 
   // validators for products router
 
-  requireTitle: check("title").trim().isLength({ min: 5, max: 40 }),
+  requireTitle: check("title")
+    .trim()
+    .isLength({ min: 5, max: 40 })
+    .withMessage("Must be between 5 to 40 characters"),
 
   // toFloat() --> Converts a string into float
-  requirePrice: check("price").trim().toFloat().isFloat({ min: 1 }),
+  requirePrice: check("price")
+    .trim()
+    .toFloat()
+    .isFloat({ min: 1 })
+    .withMessage("Must be greater than 1"),
 };
