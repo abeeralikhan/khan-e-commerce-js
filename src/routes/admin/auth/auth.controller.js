@@ -17,7 +17,7 @@ async function httpPostSignUp(req, res) {
   // We will receive this user id inside the cookie later
   req.session.userId = user.id;
 
-  res.send("<h1>Account has been created successfully!</h1>");
+  res.redirect("/admin/products/list");
 }
 
 function httpGetSignIn(req, res) {
@@ -32,7 +32,7 @@ async function httpPostSignIn(req, res) {
   // starting a session
   req.session.userId = user.id;
 
-  res.send("You are signed in!");
+  res.redirect("/admin/products/list");
 }
 
 function httpGetSignOut(req, res) {
