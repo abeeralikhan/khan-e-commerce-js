@@ -17,6 +17,9 @@ app.use(
   })
 );
 
+// redirect the root endpoint to the products list endpoint
+app.get("/", (req, res) => res.redirect("/admin/products/list"));
+
 // admin routers
 app.use("/admin", authRouter);
 app.use("/admin/products", productsRouter);
