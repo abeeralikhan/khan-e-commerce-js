@@ -7,32 +7,39 @@ const {
   requireEmailExist,
   requireValidPassowrdForUser,
 } = require("../validators");
-const { handleErrors } = require("../middlewares");
 
+const {
+  httpGetSignUp,
+  httpPostSignUp,
+  httpGetSignOut,
+  httpGetSignIn,
+  httpPostSignIn,
+} = require("./auth.controller");
+
+const { handleErrors } = require("../middlewares");
 const signUpTemplate = require("../../../views/admin/auth/signup");
 const signInTemplate = require("../../../views/admin/auth/signin");
-const authController = require("./auth.controller");
 
 const router = express.Router();
 
-router.get("/signup", authController.httpGetSignUp);
+router.get("/signup", httpGetSignUp);
 
 router.post(
   "/signup",
   [requireEmail, requirePassword, requirePasswordConfirmation],
   handleErrors(signUpTemplate),
-  authController.httpPostSignUp
+  httpPostSignUp
 );
 
-router.get("/signout", authController.httpGetSignOut);
+router.get("/signout", httpGetSignOut);
 
-router.get("/signin", authController.httpGetSignIn);
+router.get("/signin", httpGetSignIn);
 
 router.post(
   "/signin",
   [requireEmailExist, requireValidPassowrdForUser],
   handleErrors(signInTemplate),
-  authController.httpPostSignIn
+  httpPostSignIn
 );
 
 module.exports = router;

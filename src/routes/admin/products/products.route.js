@@ -1,23 +1,25 @@
 const multer = require("multer");
 const express = require("express");
 
-const { handleErrors, checkAuthentication } = require("../middlewares");
+const {
+  httpGetProducts,
+  httpGetProductForm,
+  httpSubmitProductForm,
+  httpGetProductEditForm,
+} = require("./products.controller");
+
 const { requireTitle, requirePrice } = require("../validators");
-const productsController = require("./products.controller");
+const { handleErrors, checkAuthentication } = require("../middlewares");
 const productsNewTemplate = require("../../../views/admin/products/new");
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 // to get all products
-router.get("/list", checkAuthentication, productsController.httpGetProducts);
+router.get("/list", checkAuthentication, httpGetProducts);
 
 // to show the product creation form
-router.get(
-  "/create",
-  checkAuthentication,
-  productsController.httpGetProductForm
-);
+router.get("/create", checkAuthentication, httpGetProductForm);
 
 // to submit the product creation form
 router.post(
@@ -26,7 +28,9 @@ router.post(
   upload.single("image"),
   [requireTitle, requirePrice],
   handleErrors(productsNewTemplate),
-  productsController.httpSubmitProductForm
+  httpSubmitProductForm
 );
+
+router.get("/:id/edit", httpGetProductEditForm);
 
 module.exports = router;

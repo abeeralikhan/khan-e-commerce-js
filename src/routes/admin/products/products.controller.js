@@ -22,4 +22,14 @@ async function httpGetProducts(req, res) {
   res.send(productsIndexTemplate({ products }));
 }
 
-module.exports = { httpGetProductForm, httpSubmitProductForm, httpGetProducts };
+async function httpGetProductEditForm(req, res) {
+  const productId = req.params.id;
+  const product = await productsRepo.getOne(productId);
+}
+
+module.exports = {
+  httpGetProductForm,
+  httpSubmitProductForm,
+  httpGetProducts,
+  httpGetProductEditForm,
+};
