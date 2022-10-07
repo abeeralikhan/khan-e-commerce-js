@@ -1,6 +1,8 @@
 const productsRepo = require("../../../repositories/products");
+
 const productsNewTemplate = require("../../../views/admin/products/new");
 const productsIndexTemplate = require("../../../views/admin/products/index");
+const productsEditTemplate = require("../../../views/admin/products/edit");
 
 function httpGetProductForm(req, res) {
   res.send(productsNewTemplate({}));
@@ -23,8 +25,13 @@ async function httpGetProducts(req, res) {
 }
 
 async function httpGetProductEditForm(req, res) {
-  const productId = req.params.id;
-  const product = await productsRepo.getOne(productId);
+  const product = await productsRepo.getOne(req.params.id);
+
+  if (!product) {
+    return res.send("Product not found");
+  }
+
+  res.send(productsEditTemplate({ product }));
 }
 
 module.exports = {
