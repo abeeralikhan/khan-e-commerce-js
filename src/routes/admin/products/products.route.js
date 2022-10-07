@@ -31,6 +31,6 @@ router.post(
   httpSubmitProductForm
 );
 
-router.get("/:id/edit", httpGetProductEditForm);
+router.get("/:id/edit", checkAuthentication, httpGetProductEditForm);
 
 module.exports = router;
