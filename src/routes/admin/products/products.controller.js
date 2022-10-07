@@ -34,7 +34,22 @@ async function httpGetProductEditForm(req, res) {
   res.send(productsEditTemplate({ product }));
 }
 
-async function httpSubmitProductEditForm(req, res) {}
+async function httpSubmitProductEditForm(req, res) {
+  const changes = req.body;
+
+  if (req.file) {
+    changes.image = req.file.buffer.toString("base64");
+  }
+
+  // if the product id does not exist, the edit method will throw an error
+  try {
+    await productsRepo.update(req.params.id, changes);
+  } catch (err) {
+    return res.send("Could not find item");
+  }
+
+  res.redirect("/admin/products/list");
+}
 
 module.exports = {
   httpSubmitProductForm,

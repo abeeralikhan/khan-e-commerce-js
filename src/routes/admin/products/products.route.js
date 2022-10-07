@@ -12,6 +12,7 @@ const {
 const { requireTitle, requirePrice } = require("../validators");
 const { handleErrors, checkAuthentication } = require("../middlewares");
 const productsNewTemplate = require("../../../views/admin/products/new");
+const productsEditTemplate = require("../../../views/admin/products/edit");
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -34,6 +35,13 @@ router.post(
 
 router.get("/:id/edit", checkAuthentication, httpGetProductEditForm);
 
-router.post("/:id/edit", checkAuthentication, httpSubmitProductEditForm);
+router.post(
+  "/:id/edit",
+  checkAuthentication,
+  upload.single("image"),
+  [requireTitle, requirePrice],
+  handleErrors(productsEditTemplate),
+  httpSubmitProductEditForm
+);
 
 module.exports = router;
