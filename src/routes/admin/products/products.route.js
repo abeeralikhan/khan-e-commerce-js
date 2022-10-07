@@ -10,7 +10,7 @@ const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
 
 // to get all products
-router.get("/");
+router.get("/list", productsController.httpGetProducts);
 
 // to show the product creation form
 router.get("/create", productsController.httpGetProductForm);
