@@ -4,8 +4,9 @@ const express = require("express");
 const {
   httpGetProducts,
   httpGetProductForm,
-  httpSubmitProductForm,
   httpGetProductEditForm,
+  httpSubmitProductForm,
+  httpSubmitProductEditForm,
 } = require("./products.controller");
 
 const { requireTitle, requirePrice } = require("../validators");
@@ -32,5 +33,7 @@ router.post(
 );
 
 router.get("/:id/edit", checkAuthentication, httpGetProductEditForm);
+
+router.post("/:id/edit", checkAuthentication, httpSubmitProductEditForm);
 
 module.exports = router;

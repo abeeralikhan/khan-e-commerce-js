@@ -34,9 +34,12 @@ async function httpGetProductEditForm(req, res) {
   res.send(productsEditTemplate({ product }));
 }
 
+async function httpSubmitProductEditForm(req, res) {}
+
 module.exports = {
-  httpGetProductForm,
   httpSubmitProductForm,
+  httpSubmitProductEditForm,
+  httpGetProductForm,
   httpGetProducts,
   httpGetProductEditForm,
 };
