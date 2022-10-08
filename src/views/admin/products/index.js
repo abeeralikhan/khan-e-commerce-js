@@ -27,8 +27,11 @@ module.exports = ({ products }) => {
   return layout({
     content: `
       <div class="control">
-        <h1 class="subtitle">Products</h1>  
-        <a href="/admin/products/create" class="button is-primary">New Product</a>
+        <h1 class="subtitle">Products</h1>
+        <div>
+          <a href="/admin/products/create" class="button is-primary">New Product</a>
+          <a href="/admin/signout" class="button is-danger">Logout</a>
+        </div>
       </div>
       <table class="table">
         <thead>
