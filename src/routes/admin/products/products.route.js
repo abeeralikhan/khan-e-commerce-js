@@ -13,6 +13,7 @@ const { requireTitle, requirePrice } = require("../validators");
 const { handleErrors, checkAuthentication } = require("../middlewares");
 const productsNewTemplate = require("../../../views/admin/products/new");
 const productsEditTemplate = require("../../../views/admin/products/edit");
+const productsRepo = require("../../../repositories/products");
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -35,12 +36,18 @@ router.post(
 
 router.get("/:id/edit", checkAuthentication, httpGetProductEditForm);
 
+async function sendProductData(req) {
+  const product = await productsRepo.getOne(req.params.id);
+
+  return { product };
+}
+
 router.post(
   "/:id/edit",
   checkAuthentication,
   upload.single("image"),
   [requireTitle, requirePrice],
-  handleErrors(productsEditTemplate),
+  handleErrors(productsEditTemplate, sendProductData),
   httpSubmitProductEditForm
 );
 
