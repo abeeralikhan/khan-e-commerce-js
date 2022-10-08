@@ -7,6 +7,7 @@ const {
   httpGetProductEditForm,
   httpSubmitProductForm,
   httpSubmitProductEditForm,
+  httpDeleteProduct,
 } = require("./products.controller");
 
 const { requireTitle, requirePrice } = require("../validators");
@@ -50,5 +51,7 @@ router.post(
   handleErrors(productsEditTemplate, sendProductData),
   httpSubmitProductEditForm
 );
+
+router.post("/:id/delete", checkAuthentication, httpDeleteProduct);
 
 module.exports = router;

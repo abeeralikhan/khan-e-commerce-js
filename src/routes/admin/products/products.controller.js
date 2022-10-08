@@ -51,10 +51,17 @@ async function httpSubmitProductEditForm(req, res) {
   res.redirect("/admin/products/list");
 }
 
+async function httpDeleteProduct(req, res) {
+  await productsRepo.delete(req.params.id);
+
+  res.redirect("/admin/products/list");
+}
+
 module.exports = {
   httpSubmitProductForm,
   httpSubmitProductEditForm,
   httpGetProductForm,
   httpGetProducts,
   httpGetProductEditForm,
+  httpDeleteProduct,
 };
