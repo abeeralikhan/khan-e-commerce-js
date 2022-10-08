@@ -37,7 +37,7 @@ async function httpPostSignIn(req, res) {
 
 function httpGetSignOut(req, res) {
   req.session = null;
-  res.send("You are logged out succesfully!");
+  res.redirect("/admin/signin");
 }
 
 module.exports = {
