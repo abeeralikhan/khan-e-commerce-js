@@ -2,29 +2,29 @@ const productsRepo = require("../../repositories/products");
 const cartsRepo = require("../../repositories/carts");
 
 async function httpAddProduct(req, res) {
-  // Figure out cart
   let cart;
 
   if (!req.session.cartId) {
-    // create a new cart
+    // Create a new cart & initialize the items array
     cart = await cartsRepo.create({ items: [] });
-
-    // store the cart id in the req.session.cartId
     req.session.cartId = cart.id;
-    console.log("IF BRANCH");
   } else {
-    // get cart from repo
+    // Get the existing cart
     cart = await cartsRepo.getOne(req.session.cartId);
-    console.log("ELSE BRANCH");
+  }
+  const productId = req.body.productId;
+  const product = cart.items.find((item) => item.productId === productId);
+
+  if (product) {
+    // increment quantity & save cart
+    product.quantity++;
+  } else {
+    // add new product id to items array
+    cart.items.push({ productId, quantity: 1 });
   }
 
-  console.log(cart);
-
-  // --> Already exist or not
-
-  // Add new product or increment existing quantity
-  const { productId } = req.body;
-  console.log(productId);
+  // update the cart
+  await cartsRepo.update(cart.id, { items: cart.items });
 
   res.send("Product Added to Cart");
 }
