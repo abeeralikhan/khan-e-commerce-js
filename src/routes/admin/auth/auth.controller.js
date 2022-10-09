@@ -2,6 +2,14 @@ const usersRepo = require("../../../repositories/users");
 const signUpTemplate = require("../../../views/admin/auth/signup");
 const signInTemplate = require("../../../views/admin/auth/signin");
 
+function httpAdminRedirect(req, res) {
+  if (req.session.userId) {
+    return res.redirect("/admin/products/list");
+  }
+
+  res.redirect("/admin/signin");
+}
+
 function httpGetSignUp(req, res) {
   res.send(signUpTemplate({ req }));
 }
@@ -46,4 +54,5 @@ module.exports = {
   httpGetSignOut,
   httpPostSignUp,
   httpPostSignIn,
+  httpAdminRedirect,
 };

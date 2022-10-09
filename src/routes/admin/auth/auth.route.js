@@ -14,6 +14,7 @@ const {
   httpGetSignOut,
   httpGetSignIn,
   httpPostSignIn,
+  httpAdminRedirect,
 } = require("./auth.controller");
 
 const { handleErrors } = require("../middlewares");
@@ -21,6 +22,8 @@ const signUpTemplate = require("../../../views/admin/auth/signup");
 const signInTemplate = require("../../../views/admin/auth/signin");
 
 const router = express.Router();
+
+router.get("/", httpAdminRedirect);
 
 router.get("/signup", httpGetSignUp);
 
