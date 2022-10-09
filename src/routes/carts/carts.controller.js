@@ -5,11 +5,13 @@ const cartShowTemplate = require("../../views/carts/show");
 
 async function httpAddItem(req, res) {
   let cart;
+  let redirectRoute = "/";
 
   if (!req.session.cartId) {
     // Create a new cart & initialize the items array
     cart = await cartsRepo.create({ items: [] });
     req.session.cartId = cart.id;
+    redirectRoute = "/cart";
   } else {
     // Get the existing cart
     cart = await cartsRepo.getOne(req.session.cartId);
@@ -28,7 +30,7 @@ async function httpAddItem(req, res) {
   // update the cart
   await cartsRepo.update(cart.id, { items: cart.items });
 
-  res.send("Product Added to Cart");
+  res.redirect(redirectRoute);
 }
 
 async function httpGetAllItems(req, res) {
@@ -53,8 +55,10 @@ async function httpDeleteItem(req, res) {
   const item = cart.items.find((item) => item.productId === req.body.itemId);
 
   if (item.quantity > 1) {
+    // decrement count if there are more than 1 item
     item.quantity--;
   } else {
+    // completely remove an item if the quantity is 0
     cart.items = cart.items.filter(
       (item) => item.productId !== req.body.itemId
     );
