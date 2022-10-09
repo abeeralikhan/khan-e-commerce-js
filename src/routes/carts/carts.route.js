@@ -1,6 +1,10 @@
 const express = require("express");
 
-const { httpAddProduct, httpGetAllItems } = require("./carts.controller");
+const {
+  httpAddItem,
+  httpGetAllItems,
+  httpDeleteItem,
+} = require("./carts.controller");
 
 const router = express.Router();
 
@@ -8,8 +12,8 @@ const router = express.Router();
 router.get("/", httpGetAllItems);
 
 // Receive a POST request to add an item to a cart
-router.post("/products", httpAddProduct);
+router.post("/products", httpAddItem);
 
 // Receive a POST request to delete an item from a cart
-
+router.post("/products/delete", httpDeleteItem);
 module.exports = router;

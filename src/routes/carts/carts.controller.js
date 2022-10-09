@@ -3,7 +3,7 @@ const cartsRepo = require("../../repositories/carts");
 
 const cartShowTemplate = require("../../views/carts/show");
 
-async function httpAddProduct(req, res) {
+async function httpAddItem(req, res) {
   let cart;
 
   if (!req.session.cartId) {
@@ -47,7 +47,25 @@ async function httpGetAllItems(req, res) {
   res.send(cartShowTemplate({ items: cart.items }));
 }
 
+async function httpDeleteItem(req, res) {
+  const cart = await cartsRepo.getOne(req.session.cartId);
+
+  const item = cart.items.find((item) => item.productId === req.body.itemId);
+
+  if (item.quantity > 1) {
+    item.quantity--;
+  } else {
+    cart.items = cart.items.filter(
+      (item) => item.productId !== req.body.itemId
+    );
+  }
+
+  await cartsRepo.update(req.session.cartId, { items: cart.items });
+  res.redirect("/cart");
+}
+
 module.exports = {
-  httpAddProduct,
+  httpAddItem,
   httpGetAllItems,
+  httpDeleteItem,
 };
