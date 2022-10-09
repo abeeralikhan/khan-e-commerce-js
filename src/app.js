@@ -3,9 +3,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieSession = require("cookie-session");
 
+const cartsRouter = require("./routes/carts/carts.route");
 const authRouter = require("./routes/admin/auth/auth.route");
-const adminProductsRouter = require("./routes/admin/products/products.route");
 const productsRouter = require("./routes/products/products.route");
+const adminProductsRouter = require("./routes/admin/products/products.route");
 
 const app = express();
 
@@ -18,7 +19,7 @@ app.use(
   })
 );
 
-// redirect the root endpoint to the products list endpoint
+// redirect the root endpoint to the products endpoint
 app.get("/", (req, res) => res.redirect("/products"));
 
 // admin routers
@@ -27,5 +28,8 @@ app.use("/admin/products", adminProductsRouter);
 
 // products router
 app.use("/products", productsRouter);
+
+// carts router
+app.use("/cart", cartsRouter);
 
 module.exports = app;
