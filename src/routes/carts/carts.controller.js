@@ -1,6 +1,8 @@
 const productsRepo = require("../../repositories/products");
 const cartsRepo = require("../../repositories/carts");
 
+const cartShowTemplate = require("../../views/carts/show");
+
 async function httpAddProduct(req, res) {
   let cart;
 
@@ -29,6 +31,23 @@ async function httpAddProduct(req, res) {
   res.send("Product Added to Cart");
 }
 
+async function httpGetAllItems(req, res) {
+  if (!req.session.cartId) {
+    return res.redirect("/");
+  }
+
+  const cart = await cartsRepo.getOne(req.session.cartId);
+
+  for (let item of cart.items) {
+    const product = await productsRepo.getOne(item.productId);
+
+    item.product = product;
+  }
+
+  res.send(cartShowTemplate({ items: cart.items }));
+}
+
 module.exports = {
   httpAddProduct,
+  httpGetAllItems,
 };
