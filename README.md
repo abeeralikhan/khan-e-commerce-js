@@ -23,3 +23,4 @@ An E-Commerce App made using JavaScript, Node JS, and Express JS.
 ![Products List](https://github.com/abeeralikhan/khan-e-commerce-js/blob/main/preview/products-list-customer.png?raw=true)
 
 - Cart
+![Cart](https://github.com/abeeralikhan/khan-e-commerce-js/blob/main/preview/cart.png?raw=true)
